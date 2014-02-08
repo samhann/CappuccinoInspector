@@ -8,13 +8,13 @@ var lexer = new ObjectiveJ.Lexer('objj_msgSend(objj_msgSend(self, "placing"), "i
 var unpreprocessText = function(aString) {
 
     var lexer = new ObjectiveJ.Lexer(aString);
-
     return processText(lexer);
 }
 
 var processText = function(tokens) {
 
     var output = "";
+    var token = undefined;
 
     while((token = tokens.next()) != undefined) {
 
@@ -52,23 +52,23 @@ var processMsgSend = function (tokens) {
    var selectorParts = selectorString.split(":");
    var partCtr = 0;
 
-   tokens.skip_whitespace();
-   tokens.previous();
 
-   var lookAhead = tokens.peek();
+   var lookAhead = tokens.peek(YES);
 
    if(lookAhead === ')') {
         output += selectorParts[partCtr]+ "]";
-        tokens.next();
+        tokens.skip_whitespace();
         return output;
     }
 
-    while(1) {
-    token = tokens.skip_whitespace();
+    tokens.skip_whitespace();
+
+
+    while(token != undefined) {
 
     output = output + selectorParts[partCtr] + ":" + processElementUptoComma(tokens)+" ";
     partCtr = partCtr + 1;
-    var lookAhead2 = tokens.peek();
+    var lookAhead2 = tokens.peek(YES);
     if(lookAhead2 === ')' ) {
         tokens.skip_whitespace();
         break;
