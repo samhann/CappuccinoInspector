@@ -166,8 +166,6 @@ var processElementUptoComma = function(tokens) {
 
    var className = [classTextField stringValue];
 
-   CPLog.trace("Searching for class .."+className);
-
 
    if(classList[className]) {
 
@@ -194,8 +192,6 @@ var processElementUptoComma = function(tokens) {
 - (var)numberOfRowsInTableView:(CPTableView)aTableView{
 
     var length = Object.keys(classList).length;
-    CPLog.trace("returning length as .."+length);
-
     return length;
 }
 
@@ -309,14 +305,10 @@ var processElementUptoComma = function(tokens) {
 
 }
 
-
-
-
-
 + (void)createInspectorWindowForAppController:(var)anAppController
 {
     var inspectorWindow = [[CPWindow alloc] initWithContentRect:CGRectMake(100,100,950,300)
-                                                       styleMask:CPClosableWindowMask | CPTitledWindowMask];
+                                                       styleMask:CPClosableWindowMask | CPTitledWindowMask | CPResizableWindowMask];
 
     [inspectorWindow setTitle:@"Class inspector"];
 
@@ -335,7 +327,6 @@ var processElementUptoComma = function(tokens) {
     [[methodNameColumn headerView] setStringValue:@"Method name"];
     [methodListView addTableColumn:methodNameColumn];
 
-    CPLog.trace("Number of columns ... "+[methodListView numberOfColumns]);
     [methodListView setDataSource:methodController];
     [methodListView setDelegate:methodController];
 
@@ -370,7 +361,7 @@ var processElementUptoComma = function(tokens) {
                                                          placeholder:""
                                                                width:330];
 
-    [textStringField setFrame:CGRectMake(430,55,500,120)];
+    [textStringField setFrame:CGRectMake(430,25,500,200)];
     [textStringField setLineBreakMode:CPLineBreakByWordWrapping];
     [textStringField setSelectable:YES];
     [textStringField setFont:[CPFont systemFontOfSize:12.0]];
@@ -381,11 +372,11 @@ var processElementUptoComma = function(tokens) {
     [contentView addSubview:scrollView];
 
     var injectButton = [CPButton buttonWithTitle:@"Inject"];
-    [injectButton setFrameOrigin:CGPointMake(500,225)];
+    [injectButton setFrameOrigin:CGPointMake(CGRectGetMaxX([methodScrollView frame]) + 5,225)];
     [injectButton setTarget:methodController];
     [injectButton setAction:@selector(inject)];
 
-    var previewButton = [CPButton buttonWithTitle:@"previewButton"];
+    var previewButton = [CPButton buttonWithTitle:@"Undo Preprocessing"];
     [previewButton setFrameOrigin:CGPointMake(CGRectGetMaxX([injectButton frame]),225)];
     [previewButton setTarget:methodController];
     [previewButton setAction:@selector(preview)];
@@ -405,7 +396,7 @@ var processElementUptoComma = function(tokens) {
 
 
     var addMethodButton = [CPButton buttonWithTitle:@"Add Method"];
-    [addMethodButton setFrameOrigin:CGPointMake(CGRectGetMaxX([searchButton frame]),225)];
+    [addMethodButton setFrameOrigin:CGPointMake(CGRectGetMaxX([previewButton frame]),225)];
     [addMethodButton setTarget:controller];
     [addMethodButton setAction:@selector(addMethod:)];
     [controller setClassTextField:searchField];
