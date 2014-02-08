@@ -35,10 +35,9 @@ var processText = function(tokens) {
 
 var processMsgSend = function (tokens) {
 
-   var token = tokens.next();
+   var token = tokens.skip_whitespace();
    var output = "";
-
-   output += "[";
+  output += "[";
        // get rid of opening (
    tokens.skip_whitespace();
 
