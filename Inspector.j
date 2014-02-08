@@ -70,7 +70,7 @@ var processMsgSend = function (tokens) {
     partCtr = partCtr + 1;
     var lookAhead2 = tokens.peek();
     if(lookAhead2 === ')' ) {
-        tokens.next();
+        tokens.skip_whitespace();
         break;
     }
   }
@@ -86,7 +86,7 @@ var processBalancedParensExp = function(tokens) {
    var output = "";
 
    var token = undefined;
-   tokens.next();
+   tokens.skip_whitespace();
    output += "("
 
    while((token = tokens.peek(YES)) != ')' && token != undefined) {
@@ -104,7 +104,7 @@ var processBalancedParensExp = function(tokens) {
         }
 
    }
-     tokens.next();
+     tokens.skip_whitespace();
      output+=")";
      return output;
 }
